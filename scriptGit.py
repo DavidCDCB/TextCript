@@ -69,9 +69,6 @@ def acciones(opt):
 		os.system("git log --graph --oneline")
 		input()
 		
-
-
-		
 	if(opt is "3"):
 		limpiar()
 		os.system("git fetch")
