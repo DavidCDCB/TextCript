@@ -94,7 +94,6 @@ def acciones(opt):
 		os.system("git status -s")
 		input()
 		
-		
 	if(opt is "6"):
 		limpiar()
 		os.system("git fetch")
