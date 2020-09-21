@@ -67,6 +67,7 @@ def acciones(opt):
 		limpiar()
 		os.system("git log --graph --oneline")
 		input()
+		limpiar()
 		
 	if(opt is "3"):
 		limpiar()
