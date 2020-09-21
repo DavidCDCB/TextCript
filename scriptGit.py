@@ -62,8 +62,9 @@ def acciones(opt):
 	if(opt is "2"):
 		os.system("git status -sb")
 		message=input("Descripción de cambio:")
-		#os.system("git add .")
+		os.system("git add .")
 		os.system("git commit -a -m '"+str(message)+"'")
+		limpiar()
 		os.system("git log --graph --oneline")
 		
 	if(opt is "3"):

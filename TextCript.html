@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+		<title>TextCript</title>
+    	<meta charset="utf-8"/>
+    	<meta name="description" content="protoWeb"/>
+    	<meta name="keywords" content="HTML5, CSS3,Javascrpit"/>
+    	<link href="https://fonts.googleapis.com/css?family=Caveat|Permanent+Marker|Press+Start+2P" rel="stylesheet">
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    	
+    </head>
+	<body align="center" id="cuerpo">
+		<div class="form">
+			<label class="tit">Cifrado de Texto CDCB</label><br>
+			<label class="tit">ፒፍፃፖዾጲፂፃፍዾጿፂፄፐጡፇጠጢጡዾጡ</label><br>
+			<textarea id="text" >Escribe el texto a cifrar...</textarea><br>
+			<button class="enc">Cifrar</button>
+			<input type="password" class="cla" placeholder="CLAVE" value="">
+			<button class="denc" >Descifrar</button><br><br>
+			<label class="res">Algoritmo de cifrado simétrico usando transposición en bloques, permutaciones y sustitución de caracteres Unicode.</label><br>
+			<label class="res1">ጌፂፃፁፍፌፇዾጳፃፑፃፐፁፒፐጿፁጿፃዾዾፂᏑፌፁፇፒፓፒፇፓፑዾፑዾፗፃፑፏፓፊፍዾፀፃፌፌዾፇᏑጿፁፓፒፐፋፎፃፍዾፌፂፑጿዾፓፁፍፐፇᏇፒፇፋዾፑፂፍፐጿፇፄዾፁፂፃፍዾፒፋፐፇፅፍጟፊ</label><br>
+		</div>
+		<style type="text/css">
+			#text{
+				height: 300px;
+				width: 500px;
+			}
+
+			body{
+				background-color: black;
+			}
+			button{
+				width: 155px;
+				height: 35px;
+				cursor: pointer;
+				font-family: 'Press Start 2P', cursive;
+				font-size:16px; 
+				background-color:#383838;
+				color:white;
+			}
+			#text{
+				font-family: 'Press Start 2P', cursive;
+				font-size:16px;
+				
+			}
+			.tit{
+				font-family: 'Press Start 2P', cursive;
+				color:white;
+				font-size:30px;
+			}
+			.res{
+				font-family: 'Press Start 2P', cursive;
+				color:white;
+				font-size:12px;
+			}
+			.res1{
+				font-family: 'Press Start 2P', cursive;
+				color:white;
+				font-size:12px;
+			}
+			.form{
+				margin: 2% 20%;
+			}
+			.enc{
+				border-radius:1em 0em 0em 1em;
+			}
+
+			.denc{
+				border-radius:0em 1em 1em 0em;
+			}
+
+			.cla{
+				height: 20px;
+				font-size:16px;
+			}
+		</style>
+
+		<script>
+			$(document).ready(function(){
+				$(".enc").click(function(){
+					var ch=[$(".cla").val().length],cadB="";
+					ch=cadChar($(".cla").val());
+
+					for(i in ch)
+						cadB+=cadBin(ch[i]);
+						
+					var girado=Girar($("#text").val(),$(".cla").val().length);
+					var trucado=Truncar(girado);
+					var rotado=Rotar(trucado,(cadChar($(".cla").val())[0]+cadChar($(".cla").val())[$(".cla").val().length-1])-ch.length);
+
+					if($(".cla").val()!=""){
+						$("#text").val(Inversa(nEncriptar(rotado,$(".cla").val(),1)));
+					}else{
+						alert("Ingrese clave.");
+						$(".cla").focus();
+					}
+					
+				});
+				$(".denc").click(function(){
+					var ch=[$(".cla").val().length],cadB="";
+					ch=cadChar($(".cla").val());
+
+					for(i in ch)
+						cadB+=cadBin(ch[i]);
+
+					if($(".cla").val()!=""){
+						$("#text").val(Girar(Truncar(RotarI(nEncriptar(Inversa($("#text").val()),$(".cla").val(),2),(cadChar($(".cla").val())[0]+cadChar($(".cla").val())[$(".cla").val().length-1])-ch.length)),$(".cla").val().length));
+					}else{
+						alert("Ingrese clave.");
+						$(".cla").focus();
+					}
+				});
+
+				$("#text").click(function(){
+					$("#text").select();
+				});
+			});
+
+			function encriptar(str,des){
+				var ch=[str.length];
+				var str1="";
+				for(i in str)
+					ch[i]=str.charCodeAt(i)+des;
+				for(i in ch)
+					str1+=String.fromCharCode(ch[i]);
+				return str1;
+			}
+			
+			function desEncriptar(ch,des){
+				var str1="";
+				var ch1=[ch.length];
+				for(i in ch)
+					ch1[i]=ch.charCodeAt(i);
+				for(i in ch1)
+					str1+=String.fromCharCode(ch1[i]-des);
+				return str1;
+			}
+
+	       	function Girar(text,arrc) {
+	            var ind = 0;
+	            var m=new Array(arrc);
+	            var textR=new Array(text.length);
+				var size = text.length;
+
+	            for (i = 0; i < text.length; i++)
+					textR[i]=text[i];
+				
+	            for (i = 0; i < m.length; i++)
+					m[i]=new Array(arrc);
+				
+	            while (ind <= text.length) {
+					size -= (arrc*arrc);
+					if (size > 0) {
+
+					    for (f = 0; f < m.length; f++) {
+							for ( c = 0; c < m.length; c++) {
+							      m[f][c] = text[ind];
+							      ind++;
+							}
+					    }
+
+					    var mt=new Array(arrc);
+					    var mt1=new Array(arrc);
+					    for ( i = 0; i < mt.length; i++){
+							mt[i]=new Array(arrc);
+							mt1[i]=new Array(arrc);
+						}
+
+					    for ( f = 0; f < m.length; f++) {
+							for (var c = 0; c < m[f].length; c++) {
+							      mt[c][f] = m[f][c];
+							}
+					    }
+
+					    var f1=mt.length-1;
+					    
+					    for ( f = 0; f < m.length; f++) {
+							for (var c = 0; c < m[f].length; c++) {
+							    mt1[f1][c] = mt[f][c]; 
+							}
+							if(f1>=0)f1--;
+					    }
+
+					    m = mt;
+
+					    ind -= (arrc*arrc);
+					    for ( f = 0; f < m.length; f++) {
+							for ( c = 0; c < m.length; c++) {
+							      textR[ind] = m[f][c];
+							      ind++;
+							}
+					    }
+					    var cadR="";
+			            for (i = 0; i < text.length; i++){
+							if(i<textR.length){
+								cadR+=textR[i];
+							}else cadR+=text[i];
+						}
+						
+					} else
+					    ind++;
+	            }
+	            if(cadR==undefined){
+	            	return text;
+	            }else return cadR;
+	       }
+
+			function Truncar(text) {
+				var t;
+	            var textR=new Array(text.length);
+
+	            for (i = 0; i < text.length; i++)
+					textR[i]=text[i];
+				
+				for (i = 0; i < textR.length; i += 2) {
+					if (i < textR.length - 1) {
+					    t = textR[i];
+					    textR[i] = textR[i + 1];
+					    textR[i + 1] = t;
+					}
+				}
+
+			    var cadR="";
+
+	            for (i = 0; i < text.length; i++){	
+					cadR+=textR[i];
+				}
+				return cadR;
+			}
+
+			function Rotar(arr, n) {
+	            var textR=new Array(text.length);
+
+	            for (i = 0; i < arr.length; i++)
+					textR[i]=arr[i];
+				
+				var aux = 0, tran = 0;
+				for (i = 0; i < n; i++) {
+				     tran = textR[textR.length - 1];
+				     for (j = 0; j < textR.length; j++) {
+				            aux = textR[j];
+				            textR[j] = tran;
+				            tran = aux;
+				     }
+				}
+
+			    var cadR="";
+
+	            for (i = 0; i < arr.length; i++)	
+					cadR+=textR[i];
+				
+				return cadR;
+
+			}
+
+			function RotarI(arr, n) {
+				var textR=new Array(text.length);
+				var cadR="";
+
+				for (i = 0; i < arr.length; i++)
+					textR[i]=arr[i];
+				
+				var aux = 0, tran = 0;
+
+				for (i = 0; i < n; i++) {
+				     tran = textR[0];
+				     for (j = textR.length - 1; j >= 0; j--) {
+				            aux = textR[j];
+				            textR[j] = tran;
+				            tran = aux;
+				     }
+				}
+
+				for (i = 0; i < arr.length; i++)	
+					cadR+=textR[i];
+				
+				return cadR;
+
+			}
+
+			function Inversa(text) {
+
+				var au=new Array(text.length);
+				var j = text.length - 1;
+				var cadR="";
+
+				for (i = 0; i < text.length; i++)
+					au[i]=text[i];
+				
+				for ( i = 0; i < text.length; i++) {
+				     au[j] = text[i];
+				     j--;
+				}
+
+				for (i = 0; i < text.length; i++)
+					cadR+=au[i];
+				
+				return cadR;
+			}
+
+			function rotanrN(t,tip,bin,dC){
+				for (i = 0; i < bin.length; i++) {
+					if(bin[i]=="1"){
+						if(tip==1)t=Rotar(t,dC);
+						if(tip==2)t=RotarI(t,dC);
+					}else {
+						if(tip==1)t=RotarI(t,dC);
+						if(tip==2)t=Rotar(t,dC);
+					}
+				}
+				return t;
+			}
+
+			function cadChar(str){
+				var ch=[str.length];
+				var str1="";
+				for(i in str)
+					ch[i]=str.charCodeAt(i);
+				return ch;
+			}
+
+			function cadBin(num){
+				var bin="";
+				while(num>=1){
+					bin=(num%2)+bin;
+					num=parseInt(num/2);
+				}
+				return bin;
+			}
+
+			function binCad(bin){
+				var num=0,cu=1;
+				for(i=bin.length-1;i>=0;i--){
+					if(bin[i]=="1"){
+						num+=parseInt(cu);
+					}
+					cu=parseInt(cu*2);
+				}
+				return num;
+			}
+
+
+			function nEncriptar(t,c,tip){
+				var des=0;
+				var ch=[c.length];
+				var cht=[t.length];
+
+				ch=cadChar(c);
+				cht=cadChar(t);
+
+				for(i in ch){
+					if(parseInt(ch[i])%2==0)des = parseInt((ch[ch.length - 1]) - i);
+					else des = parseInt((ch[ch.length - 1 - i]));
+
+					for(i in cht){
+						if (cht[i] != 10){
+							if(tip==1)cht[i] = (cht[i] + des);
+							else cht[i] = (cht[i] - des);
+						}
+					}
+				}
+
+				t="";
+				for(i in cht)
+					t+=String.fromCharCode(cht[i]);
+				return t;
+			}
+
+		</script>	
+	</body>
+</html>

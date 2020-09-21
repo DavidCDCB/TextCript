@@ -1,0 +1,42 @@
+.container{
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+body{
+	overflow-x: hidden !important;
+	background-image:url("../images/fondo3.png");
+}
+
+#resaltado,p{
+	font-weight: bold !important;
+	color: white !important;
+	margin: 20px;
+	text-align: center;
+	text-shadow: 4px 4px 2px rgba(0, 0, 0, 1);
+}
+
+input{
+	width: 100%;
+	margin-bottom: 30px;
+	font-size: 1em;
+
+}
+
+.btn{
+	width: 100%;
+	font-size: 0.6em;
+	font-weight: bold;
+	margin-left: 0px;
+}
+
+textarea{
+	font-size: 0.8em;
+	width: 100%;
+	height: 20em;
+}
+
+.form-control{
+	font-size: 1em;
+	color: white;
+	margin-top: 0px;
+}

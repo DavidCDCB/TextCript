@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>TextCript</title>
+	<link rel="icon" href="vista/images/icon.png">
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+	<!-- Google Fonts Roboto -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="./vista/css/bootstrap.min.css">
+	<!-- Material Design Bootstrap -->
+	<link rel="stylesheet" href="./vista/css/mdb.min.css">
+	<!-- Your custom styles (optional) -->
+	<link rel="stylesheet" href="./vista/css/style.css">
+	
+</head>
+<body>
+	<div id="principal" class="container rounded mt-3 h2-responsive animated fadeInDown slow">
+		<div class="row justify-content-center">
+			<label id="resaltado">Cifrado de Texto by CDCB</label><br>		
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-12">
+				<textarea id="text" placeholder="Escribe el texto a cifrar..." ></textarea><br>
+			</div>
+		</div>
+		<div class="row">
+			<div class="md-form form-lg col-sm-12 col-md-4 mt-sm-2 mb-sm-3">
+				<input id="cla" type="password" class="form-control form-control-lg cla" placeholder="CLAVE" value="">
+			</div>
+			
+			<div class="col-sm-6 col-md-4">
+				<button id="enc" type="button" class="btn btn-mdb-color btn-rounded">Cifrar <i class="fas fa-lock"></i></button>
+			</div>
+			<div class="col-sm-6 col-md-4">
+				<button id="denc" type="button" class="btn btn-mdb-color btn-rounded">Decifrar <i class="fas fa-lock-open"></i></button>
+			</div>
+		</div>
+	</div>
+  <!-- jQuery -->
+  <script type="text/javascript" src="./vista/js/jquery.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="./vista/js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="./vista/js/mdb.min.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script  type="module" src="./vista/js/main.js" ></script>
+</body>
+</html>

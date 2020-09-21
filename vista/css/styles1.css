@@ -1,0 +1,95 @@
+body{
+	background-image:url("../images/fondo3.png");
+	overflow-x: hidden;
+}
+
+::-webkit-scrollbar{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb{
+	background-color: #3949ab; 
+	border-radius: 5px; 
+}
+
+#modal1{
+    background-color:rgba(0, 0, 0, 0.6);
+    border-radius: 5px; 
+	border: black 2px ridge;  
+
+	text-align: center;
+	overflow-x:hidden;
+	overflow-y:hidden;
+
+	transition-property: all;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in;
+}
+
+input{
+	font-weight: bold;
+	color: mintcream;
+}
+
+.input-field input:focus + label {
+	color: cyan !important;
+}
+/* label underline focus color */
+.input-field input:focus {
+	border-bottom: 1px solid cyan !important;
+	box-shadow: 0 1px 0 0 cyan !important
+}
+
+.input-field input{
+	border-bottom: 1px solid #3949ab  !important;
+	box-shadow: 0 1px 0 0 #3949ab  !important
+}
+
+.input-field label{
+	font-weight: bold !important;
+	color: mintcream !important;
+	font-size: 18px !important;
+}
+
+
+
+#grafo{
+	margin-top: 1em;
+	margin-left: 1em;
+	width: 98%; /*controla la anchura de el div*/
+}
+
+#myDiagramDiv{
+	border-radius: 10px;  
+}
+
+
+a{
+	margin-right: 2px;
+	margin-top: 2px;
+	font-weight: bold;
+}
+
+
+#estadoActual{
+	font-weight: bold;
+	font-size: 18px;
+	background-color:rgba(0, 0, 0, 0.6);
+	color: blanchedalmond;
+	padding: 5px;
+	margin: 0px;
+	text-align: center;
+}
+
+#boton{
+	position:absolute; z-index:3;
+	margin-top: 1em;
+	margin-left: 1em;
+}
+
+
+
