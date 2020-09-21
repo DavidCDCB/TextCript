@@ -98,7 +98,7 @@ def acciones(opt):
 	if(opt is "6"):
 		limpiar()
 		os.system("git fetch")
-		os.system("git push origin--all")
+		os.system("git push origin --all")
 		input()
 
 	if(opt is "7"):
