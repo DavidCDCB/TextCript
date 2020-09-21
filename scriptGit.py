@@ -34,7 +34,7 @@ def menu():
 	print("[1] Clonar proyecto")
 	print("[2] Crear cambio")
 	print("[3] Comparar Local vs Remoto")
-	print("[4] Adquirir cambios remotos")
+	print("[4] Fusionar Rama")
 	print("[5] Ver historial y estado")
 	print("[6] Subir cambios locales")
 	print("[7] Ir a Commit o Rama")
@@ -89,10 +89,7 @@ def acciones(opt):
 	if(opt is "4"):
 		os.system("git fetch")
 		rama=input("Rama a traer > ")
-		if(rama=="origin"):
-			os.system("git merge")
-		else:
-			os.system("git merge "+str(rama))
+		os.system("git merge "+str(rama))
 		input()
 		
 	if(opt is "5"):
