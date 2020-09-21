@@ -66,6 +66,7 @@ def acciones(opt):
 		os.system("git commit -a -m '"+str(message)+"'")
 		limpiar()
 		os.system("git log --graph --oneline")
+		input()
 		
 	if(opt is "3"):
 		limpiar()
@@ -91,6 +92,7 @@ def acciones(opt):
 		print("\n Modificaciones sin reportar: \n")
 		os.system("git status -s")
 		input()
+		limpiar()
 		
 	if(opt is "6"):
 		os.system("git push origin --all")
