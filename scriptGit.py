@@ -36,7 +36,7 @@ def menu():
 	print("[3] Comparar Local vs Remoto")
 	print("[4] Fusionar Rama")
 	print("[5] Ver historial y estado")
-	print("[6] Subir cambios locales")
+	print("[6] Subir ramas locales")
 	print("[7] Ir a Commit o Rama")
 	print("[8] Crear rama")
 	print("[9] Deshacer ultimo commit")		
@@ -63,10 +63,12 @@ def acciones(opt):
 		exit()
 		
 	if(opt is "2"):
+		'''
 		print(" Integrando cambios remotos:\n")
 		os.system("git fetch")
 		os.system("git log --all --abbrev-commit master..origin/master")
 		os.system("git merge")
+		'''
 		print("\nCambios a confirmar...\n")
 		os.system("git status -sb")
 		message=input("\nDescripción del cambio > ")
