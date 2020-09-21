@@ -61,6 +61,9 @@ def acciones(opt):
 		exit()
 		
 	if(opt is "2"):
+		print(" Actualizando posibles cambios remotos:\n")
+		os.system("git fetch")
+		os.system("git merge")
 		os.system("git status -sb")
 		message=input("Descripción de cambio > ")
 		os.system("git add .")
