@@ -6,6 +6,7 @@ import sys
 
 def inicio():
 	while(True):
+		limpiar()
 		print("\n __           _       _       ___ _ _  ") 
 		print("/ _\ ___ _ __(_)_ __ | |_    / _ (_) |_ ")
 		print("\ \ / __| '__| | '_ \| __|  / /_\/ | __|")
@@ -67,7 +68,6 @@ def acciones(opt):
 		limpiar()
 		os.system("git log --graph --oneline")
 		input()
-		limpiar()
 		
 	if(opt is "3"):
 		limpiar()
@@ -93,12 +93,12 @@ def acciones(opt):
 		print("\n Modificaciones sin reportar: \n")
 		os.system("git status -s")
 		input()
-		limpiar()
+		
 		
 	if(opt is "6"):
 		limpiar()
 		os.system("git fetch")
-		os.system("git push origin -f --all")
+		os.system("git push origin--all")
 		input()
 
 	if(opt is "7"):
