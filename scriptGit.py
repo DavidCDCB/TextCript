@@ -40,8 +40,6 @@ def menu():
 	print("[9] Deshacer ultimo commit")		
 	acciones(input("Opción> "))
 
-	
-
 def acciones(opt):
 	limpiar()
 	if(opt is "0"):
