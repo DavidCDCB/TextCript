@@ -113,7 +113,6 @@ def acciones(opt):
 		input()
 
 	if(opt is "7"):
-		os.system("git log --graph --oneline --decorate --all")
 		print("\nRamas:\n")
 		os.system("git branch -v")
 		idCommit=input("Id del Commit o Rama > ")
