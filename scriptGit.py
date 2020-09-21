@@ -88,7 +88,11 @@ def acciones(opt):
 		
 	if(opt is "4"):
 		os.system("git fetch")
-		os.system("git merge")
+		rama=input("Rama a traer > ")
+		if(rama!="origin"):
+			os.system("git merge")
+		else:
+			os.system("git merge "+str(rama))
 		input()
 		
 	if(opt is "5"):
