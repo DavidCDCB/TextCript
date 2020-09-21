@@ -33,7 +33,7 @@ def menu():
 	print("[0] Establecer usuario")
 	print("[1] Clonar proyecto")
 	print("[2] Crear cambio")
-	print("[3] Comparar Local vs Remoto")
+	print("[3] Comparar Ramas")
 	print("[4] Fusionar Rama")
 	print("[5] Ver historial y estado")
 	print("[6] Subir ramas locales")
@@ -81,12 +81,13 @@ def acciones(opt):
 	if(opt is "3"):
 		limpiar()
 		os.system("git fetch")
+		ramas=input("Ramas a comparar > ")
 		if(sys.platform.startswith('linux')):
-			os.system("git difftool -y --tool=meld master origin/master")
+			os.system("git difftool -y --tool=meld "+str(ramas))
 		else:
 			print("-> INGRESAR ':q' PARA SALIR DEL COMPARADOR")
 			input()
-			os.system("git difftool -y master origin/master")
+			os.system("git difftool -y "+str(ramas))
 		
 	if(opt is "4"):
 		os.system("git fetch")
@@ -126,6 +127,7 @@ def acciones(opt):
 		limpiar()
 		rama=input("Nombre de rama > ")
 		os.system("git branch "+str(rama))
+		os.system("git checkout "+str(rama))
 		os.system("git branch -v")
 		input()
 
