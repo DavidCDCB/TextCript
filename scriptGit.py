@@ -43,14 +43,14 @@ def menu():
 def acciones(opt):
 	limpiar()
 	if(opt is "0"):
-		nombre=input("Usuario:")
+		nombre=input("Usuario > ")
 		os.system("git config --global user.name '"+str(nombre)+"'")
-		correo=input("Correo:")
+		correo=input("Correo > ")
 		os.system("git config --global user.email '"+str(correo)+"'")
 		os.system("git config --list")
 
 	if(opt is "1"):
-		repo=input("Link HTTPS del Repositorio:")
+		repo=input("Link HTTPS del Repositorio > ")
 		os.system("git clone "+str(repo))
 		if(sys.platform.startswith('linux')):
 			os.system("mv scriptGit.py ./"+str(repo.split("/")[4].split(".")[0]))
@@ -62,7 +62,7 @@ def acciones(opt):
 		
 	if(opt is "2"):
 		os.system("git status -sb")
-		message=input("Descripción de cambio:")
+		message=input("Descripción de cambio > ")
 		os.system("git add .")
 		os.system("git commit -a -m '"+str(message)+"'")
 		limpiar()
@@ -111,7 +111,7 @@ def acciones(opt):
 		os.system("git push origin --all")
 
 	if(opt is "9"):
-		respuesta=input("¿Conservar Cambios? s/n > ")
+		respuesta=input("¿Conservar modificaciones? s/n > ")
 		if( respuesta is "s"):
 			os.system("git reset --soft HEAD^")
 		else:
