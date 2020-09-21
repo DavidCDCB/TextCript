@@ -3,7 +3,6 @@
 #https://www.campusmvp.es/recursos/post/como-eliminar-el-ultimo-commit-de-git-en-el-repositorio-de-origen-p-ej-github.aspx
 import os
 import sys
-
 def inicio():
 	while(True):
 		limpiar()
