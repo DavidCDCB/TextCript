@@ -3,6 +3,7 @@
 #https://www.campusmvp.es/recursos/post/como-eliminar-el-ultimo-commit-de-git-en-el-repositorio-de-origen-p-ej-github.aspx
 import os
 import sys
+
 def inicio():
 	while(True):
 		limpiar()
@@ -89,6 +90,8 @@ def acciones(opt):
 			os.system("git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit")
 		else:
 			os.system("git log --graph --decorate --all --abbrev-commit")
+		input()
+		limpiar()
 		print("\n Modificaciones sin reportar: \n")
 		os.system("git status -s")
 		input()
