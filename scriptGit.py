@@ -40,7 +40,7 @@ def menu():
 	print("[7] Ir a Commit o Rama")
 	print("[8] Crear rama")
 	print("[9] Deshacer ultimo commit")		
-	acciones(input("Opción> "))
+	acciones(input("Opción > "))
 
 def acciones(opt):
 	limpiar()
@@ -63,17 +63,11 @@ def acciones(opt):
 		exit()
 		
 	if(opt is "2"):
-		'''
-		print(" Integrando cambios remotos:\n")
-		os.system("git fetch")
-		os.system("git log --all --abbrev-commit master..origin/master")
-		os.system("git merge")
-		'''
 		print("\nCambios a confirmar...\n")
 		os.system("git status -sb")
 		message=input("\nDescripción del cambio > ")
 		os.system("git add .")
-		os.system("git commit -a -m '"+str(message)+"'")
+		os.system("git commit -m '"+str(message)+"'")
 		limpiar()
 		os.system("git log -3 --graph --decorate --all --abbrev-commit")
 		input()
@@ -96,6 +90,7 @@ def acciones(opt):
 		input()
 		
 	if(opt is "5"):
+		os.system("git fetch")
 		limpiar()
 		os.system('git log --graph --pretty=format:"%C(cyan)%h%Creset -> %an -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset" --abbrev-commit')
 		input()
