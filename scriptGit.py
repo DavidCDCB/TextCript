@@ -44,14 +44,14 @@ def menu():
 
 def acciones(opt):
 	limpiar()
-	if(opt is "0"):
+	if(opt == "0"):
 		nombre=input("Usuario > ")
 		os.system("git config --global user.name '"+str(nombre)+"'")
 		correo=input("Correo > ")
 		os.system("git config --global user.email '"+str(correo)+"'")
 		os.system("git config --list")
 
-	if(opt is "1"):
+	if(opt == "1"):
 		repo=input("Link HTTPS del Repositorio > ")
 		os.system("git clone "+str(repo))
 		if(sys.platform.startswith('linux')):
@@ -62,7 +62,7 @@ def acciones(opt):
 		time.sleep(5)
 		exit()
 		
-	if(opt is "2"):
+	if(opt == "2"):
 		print("\nCambios a confirmar...\n")
 		os.system("git status -sb")
 		message=input("\nDescripción del cambio > ")
@@ -72,7 +72,7 @@ def acciones(opt):
 		os.system("git log -3 --graph --decorate --all --abbrev-commit")
 		input()
 			
-	if(opt is "3"):
+	if(opt == "3"):
 		limpiar()
 		os.system("git fetch")
 		ramas=input("Ramas a comparar > ")
@@ -83,13 +83,13 @@ def acciones(opt):
 			input()
 			os.system("git difftool -y "+str(ramas))
 		
-	if(opt is "4"):
+	if(opt == "4"):
 		os.system("git fetch")
 		rama=input("Rama a traer > ")
 		os.system("git merge "+str(rama))
 		input()
 		
-	if(opt is "5"):
+	if(opt == "5"):
 		os.system("git fetch")
 		limpiar()
 		os.system('git log --graph --pretty=format:"%C(cyan)%h%Creset -> %an -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset" --abbrev-commit')
@@ -102,20 +102,20 @@ def acciones(opt):
 		os.system("git status -s")
 		input()
 		
-	if(opt is "6"):
+	if(opt == "6"):
 		limpiar()
 		os.system("git fetch")
 		os.system("git push origin --all")
 		input()
 
-	if(opt is "7"):
+	if(opt == "7"):
 		print("\nRamas:\n")
 		os.system("git branch -v")
 		idCommit=input("Id del Commit o Rama > ")
 		os.system("git checkout "+idCommit)
 		input()
 		
-	if(opt is "8"):
+	if(opt == "8"):
 		limpiar()
 		rama=input("Nombre de rama > ")
 		os.system("git branch "+str(rama))
@@ -123,7 +123,7 @@ def acciones(opt):
 		os.system("git branch -v")
 		input()
 
-	if(opt is "9"):
+	if(opt == "9"):
 		respuesta=input("¿Conservar modificaciones? s/n > ")
 		if( respuesta is "s"):
 			os.system("git reset --soft HEAD^")
@@ -132,3 +132,4 @@ def acciones(opt):
 		
 limpiar()
 inicio()
+
