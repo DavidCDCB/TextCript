@@ -78,9 +78,10 @@ def acciones(opt):
 	if(opt == "3"):
 		limpiar()
 		os.system("git fetch")
-		ramas=input("Ramas a comparar > ")
+		ramaA=input("Comparar rama: > ")
+		ramaB=input("Con la rama: > ")
 		if(sys.platform.startswith('linux')):
-			os.system("git difftool -y --tool=meld "+str(ramas))
+			os.system("git difftool -y --tool=meld "+str(ramaA)+" "+str(ramaB))
 		else:
 			print("-> INGRESAR ':q' PARA SALIR DEL COMPARADOR")
 			input()
@@ -133,7 +134,7 @@ def acciones(opt):
 		respuesta=input("¿Conservar modificaciones? s/n > ")
 		if(respuesta.lower() is "s"):
 			os.system("git reset --soft HEAD^")
-		else:
+		elif(respuesta.lower() is "n"):
 			os.system("git reset --hard HEAD^")
 		
 def main():
