@@ -20,7 +20,6 @@ def inicio():
 		os.system("git branch")
 		if(os.popen('git config --get remote.origin.url').read()==""):
 			print("Sin repositorio, se debe clonar un proyecto.")
-		print("\n")
 		menu()
 
 def limpiar():
@@ -30,17 +29,21 @@ def limpiar():
 		os.system("cls")
 
 def menu():
-	print("[0] Establecer usuario")
-	print("[1] Clonar proyecto")
-	print("[2] Crear cambio")
-	print("[3] Comparar Ramas")
-	print("[4] Fusionar Rama")
-	print("[5] Ver historial y estado")
-	print("[6] Subir ramas locales")
-	print("[7] Ir a Commit o Rama")
-	print("[8] Crear rama")
-	print("[9] Deshacer ultimo commit")		
+	text='''
+[0] Establecer usuario
+[1] Clonar proyecto
+[2] Crear cambio
+[3] Comparar Ramas
+[4] Fusionar Rama
+[5] Ver historial y estado
+[6] Subir rama local
+[7] Ir a Commit o Rama
+[8] Crear rama
+[9] Deshacer ultimo commit
+	'''	
+	print(text)
 	acciones(input("Opción > "))
+	
 
 def acciones(opt):
 	limpiar()
@@ -85,6 +88,7 @@ def acciones(opt):
 		
 	if(opt == "4"):
 		os.system("git fetch")
+		os.system("git branch -v")
 		rama=input("Rama a traer > ")
 		os.system("git merge "+str(rama))
 		input()
@@ -105,7 +109,9 @@ def acciones(opt):
 	if(opt == "6"):
 		limpiar()
 		os.system("git fetch")
-		os.system("git push origin --all")
+		os.system("git branch -v")
+		rama=input("Rama a subir > ")
+		os.system("git push origin "+rama)
 		input()
 
 	if(opt == "7"):
@@ -125,11 +131,14 @@ def acciones(opt):
 
 	if(opt == "9"):
 		respuesta=input("¿Conservar modificaciones? s/n > ")
-		if( respuesta is "s"):
+		if(respuesta.lower() is "s"):
 			os.system("git reset --soft HEAD^")
 		else:
 			os.system("git reset --hard HEAD^")
 		
-limpiar()
-inicio()
+def main():
+	limpiar()
+	inicio()
 
+if __name__ == "__main__":
+    main()
