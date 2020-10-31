@@ -1,7 +1,3 @@
-#! /usr/bin/python3
-#https://gist.github.com/dasdo/9ff71c5c0efa037441b6
-#https://desarrolloweb.com/articulos/trabajar-ramas-git.html
-#https://www.campusmvp.es/recursos/post/como-eliminar-el-ultimo-commit-de-git-en-el-repositorio-de-origen-p-ej-github.aspx
 import os
 import sys
 import time
@@ -16,7 +12,7 @@ _\ \ (__| |  | | |_) | |_  / /_)\| | |_
 '''
 menu='''
 [0] Establecer usuario
-[1] Crear tag
+[1] Crear etiqueta
 [2] Crear cambio
 [3] Comparar Ramas
 [4] Fusionar Rama
@@ -30,7 +26,7 @@ menu='''
 def inicio():
 	while(True):
 		limpiar()
-		print(title)
+		efecto(title)
 		if(os.popen('git config --get remote.origin.url').read()==""):
 			print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
 			clone()
@@ -39,7 +35,7 @@ def inicio():
 			os.system("git config --get user.email")
 			os.system("git config --get remote.origin.url")
 			os.system("git branch")
-			print(menu)
+			efecto(menu)
 			acciones(input("Opción > "))
 
 def limpiar():
@@ -47,6 +43,11 @@ def limpiar():
 		os.system("clear")
 	else:
 		os.system("cls")
+
+def efecto(lista):
+	for line in lista.split("\n"):
+		print(line)
+		time.sleep(0.05)
 
 def clone():
 	repo=input("Link HTTPS del repositorio a clonar > ")
