@@ -4,6 +4,7 @@
 #https://www.campusmvp.es/recursos/post/como-eliminar-el-ultimo-commit-de-git-en-el-repositorio-de-origen-p-ej-github.aspx
 import os
 import sys
+import time
 
 title='''
  __           _       _       ___ _ _  
@@ -13,9 +14,9 @@ _\ \ (__| |  | | |_) | |_  / /_)\| | |_
 \__/\___|_|  |_| .__/ \__| \____/|_|\__|
                |_|              
 '''
-text='''
+menu='''
 [0] Establecer usuario
-[1] Clonar proyecto
+[1] Crear tag
 [2] Crear cambio
 [3] Comparar Ramas
 [4] Fusionar Rama
@@ -30,13 +31,16 @@ def inicio():
 	while(True):
 		limpiar()
 		print(title)
-		os.system("git config --get user.name")
-		os.system("git config --get user.email")
-		os.system("git config --get remote.origin.url")
-		os.system("git branch")
 		if(os.popen('git config --get remote.origin.url').read()==""):
-			print("Sin repositorio, se debe clonar un proyecto.")
-		menu()
+			print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
+			clone()
+		else:
+			os.system("git config --get user.name")
+			os.system("git config --get user.email")
+			os.system("git config --get remote.origin.url")
+			os.system("git branch")
+			print(menu)
+			acciones(input("Opción > "))
 
 def limpiar():
 	if(sys.platform.startswith('linux')):
@@ -44,9 +48,16 @@ def limpiar():
 	else:
 		os.system("cls")
 
-def menu():
-	print(text)
-	acciones(input("Opción > "))
+def clone():
+	repo=input("Link HTTPS del repositorio a clonar > ")
+	os.system("git clone "+str(repo))
+	if(sys.platform.startswith('linux')):
+		os.system("mv scriptGit.py ./"+str(repo.split("/")[4].split(".")[0]))
+	else:
+		os.system("move scriptGit.py "+str(repo.split("/")[4].split(".")[0]))
+	print("Script Movido!!!")
+	time.sleep(5)
+	exit()
 
 def acciones(opt):
 	limpiar()
@@ -58,15 +69,10 @@ def acciones(opt):
 		os.system("git config --list")
 
 	if(opt == "1"):
-		repo=input("Link HTTPS del Repositorio > ")
-		os.system("git clone "+str(repo))
-		if(sys.platform.startswith('linux')):
-			os.system("mv scriptGit.py ./"+str(repo.split("/")[4].split(".")[0]))
-		else:
-			os.system("move scriptGit.py "+str(repo.split("/")[4].split(".")[0]))
-		print("Script Movido!!!")
-		time.sleep(5)
-		exit()
+		os.system("git tag")
+		etiqueta=input("\nCrear versión > ")
+		descripcion=input("\nDescripción > ")
+		os.system("git tag -a "+etiqueta+" -m '"+str(descripcion)+"'")
 		
 	if(opt == "2"):
 		print("\nCambios a confirmar...\n")
