@@ -5,15 +5,31 @@
 import os
 import sys
 
+title='''
+ __           _       _       ___ _ _  
+/ _\ ___ _ __(_)_ __ | |_    / _ (_) |_ 
+\ \ / __| '__| | '_ \| __|  / /_\/ | __|
+_\ \ (__| |  | | |_) | |_  / /_)\| | |_  
+\__/\___|_|  |_| .__/ \__| \____/|_|\__|
+               |_|              
+'''
+text='''
+[0] Establecer usuario
+[1] Clonar proyecto
+[2] Crear cambio
+[3] Comparar Ramas
+[4] Fusionar Rama
+[5] Ver historial y estado
+[6] Subir rama local
+[7] Ir Rama especifica
+[8] Crear rama
+[9] Ir a Commit especifico
+'''	
+
 def inicio():
 	while(True):
 		limpiar()
-		print("\n __           _       _       ___ _ _  ") 
-		print("/ _\ ___ _ __(_)_ __ | |_    / _ (_) |_ ")
-		print("\ \ / __| '__| | '_ \| __|  / /_\/ | __|")
-		print("_\ \ (__| |  | | |_) | |_  / /_)\| | |_  ")
-		print("\__/\___|_|  |_| .__/ \__| \____/|_|\__|")
-		print("               |_|              ")
+		print(title)
 		os.system("git config --get user.name")
 		os.system("git config --get user.email")
 		os.system("git config --get remote.origin.url")
@@ -29,21 +45,8 @@ def limpiar():
 		os.system("cls")
 
 def menu():
-	text='''
-[0] Establecer usuario
-[1] Clonar proyecto
-[2] Crear cambio
-[3] Comparar Ramas
-[4] Fusionar Rama
-[5] Ver historial y estado
-[6] Subir rama local
-[7] Ir a Commit o Rama
-[8] Crear rama
-[9] Deshacer ultimo commit
-	'''	
 	print(text)
 	acciones(input("Opción > "))
-	
 
 def acciones(opt):
 	limpiar()
@@ -78,19 +81,20 @@ def acciones(opt):
 	if(opt == "3"):
 		limpiar()
 		os.system("git fetch")
-		ramaA=input("Comparar rama: > ")
+		ramaA=input("\nComparar rama: > ")
 		ramaB=input("Con la rama: > ")
 		if(sys.platform.startswith('linux')):
 			os.system("git difftool -y --tool=meld "+str(ramaA)+" "+str(ramaB))
 		else:
 			print("-> INGRESAR ':q' PARA SALIR DEL COMPARADOR")
 			input()
-			os.system("git difftool -y "+str(ramas))
+			os.system("git difftool -y "+str(ramaA)+" "+str(ramaB))
 		
 	if(opt == "4"):
 		os.system("git fetch")
-		os.system("git branch -v")
+		os.system("\ngit branch -v")
 		rama=input("Rama a traer > ")
+		os.system("git diff "+str(rama))
 		os.system("git merge "+str(rama))
 		input()
 		
@@ -118,7 +122,7 @@ def acciones(opt):
 	if(opt == "7"):
 		print("\nRamas:\n")
 		os.system("git branch -v")
-		idCommit=input("Id del Commit o Rama > ")
+		idCommit=input("Nombre de Rama > ")
 		os.system("git checkout "+idCommit)
 		input()
 		
@@ -131,12 +135,17 @@ def acciones(opt):
 		input()
 
 	if(opt == "9"):
+		commit=input("ID de Commit > ")
 		respuesta=input("¿Conservar modificaciones? s/n > ")
-		if(respuesta.lower() is "s"):
-			os.system("git reset --soft HEAD^")
-		elif(respuesta.lower() is "n"):
-			os.system("git reset --hard HEAD^")
-		
+		if(respuesta.lower() == "s"):
+			os.system("git reset "+commit+" --soft")
+		elif(respuesta.lower() == "n"):
+			os.system("git reset "+commit+" --hard")
+		else:
+			print("Abortado")
+			input()
+		os.system("git log -3 --graph --decorate --all --abbrev-commit")
+
 def main():
 	limpiar()
 	inicio()
