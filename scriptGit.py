@@ -14,13 +14,13 @@ menu='''
 [0] Establecer usuario
 [1] Crear etiqueta
 [2] Crear cambio
-[3] Comparar Ramas
-[4] Fusionar Rama
+[3] Comparar ramas
+[4] Fusionar rama
 [5] Ver historial y estado
 [6] Subir rama local
-[7] Ir Rama especifica
+[7] Ir a rama especifica
 [8] Crear rama
-[9] Ir a Commit especifico
+[9] Ir a cambio especifico
 '''	
 
 def inicio():
@@ -88,6 +88,7 @@ def acciones(opt):
 	if(opt == "3"):
 		limpiar()
 		os.system("git fetch")
+		os.system("\ngit branch -v -a")
 		ramaA=input("\nComparar rama: > ")
 		ramaB=input("Con la rama: > ")
 		if(sys.platform.startswith('linux')):
@@ -99,7 +100,7 @@ def acciones(opt):
 		
 	if(opt == "4"):
 		os.system("git fetch")
-		os.system("\ngit branch -v")
+		os.system("\ngit branch -v -a")
 		rama=input("Rama a traer > ")
 		os.system("git diff "+str(rama))
 		os.system("git merge "+str(rama))
@@ -142,6 +143,7 @@ def acciones(opt):
 		input()
 
 	if(opt == "9"):
+		os.system("git reflog")
 		commit=input("ID de Commit > ")
 		respuesta=input("¿Conservar modificaciones? s/n > ")
 		if(respuesta.lower() == "s"):
@@ -152,6 +154,12 @@ def acciones(opt):
 			print("Abortado")
 			input()
 		os.system("git log -3 --graph --decorate --all --abbrev-commit")
+
+	#Para corregir cagazo en un commit acabado de crear :D
+	if(opt == "10"):
+		os.system("git add .")
+		os.system("git commit --amend")
+		input()
 
 def main():
 	limpiar()
