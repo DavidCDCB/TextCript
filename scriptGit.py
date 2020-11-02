@@ -62,7 +62,6 @@ def efecto(lista):
 		else:
 			print(bcolors["OKCYAN"]+line)
 
-
 def clone():
 	repo=input("Link HTTPS del repositorio a clonar > ")
 	os.system("git clone "+str(repo))
