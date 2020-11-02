@@ -57,7 +57,6 @@ def limpiar():
 
 def efecto(lista):
 	for line in lista.split("\n"):
-
 		if("]" in line):
 			print(bcolors["WARNING"]+line[:3]+bcolors["OKGREEN"]+line[3:])
 		else:
@@ -95,7 +94,7 @@ def acciones(opt):
 		os.system("git status -sb")
 		message=input("\nDescripción del cambio > ")
 		os.system("git add .")
-		os.system("git commit -m '"+str(message)+"'")
+		os.system('git commit -m "'+str(message)+'"')
 		limpiar()
 		os.system("git log -3 --graph --decorate --all --abbrev-commit")
 		input()
