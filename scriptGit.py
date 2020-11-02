@@ -22,6 +22,17 @@ menu='''
 [8] Crear rama
 [9] Ir a cambio especifico
 '''	
+bcolors={
+    "HEADER" : '\033[95m',
+    "OKBLUE" : '\033[94m',
+    "OKCYAN" : '\033[96m',
+    "OKGREEN" : '\033[92m',
+    "WARNING" : '\033[93m',
+    "FAIL" : '\033[91m',
+    "ENDC" : '\033[0m',
+    "BOLD" : '\033[1m',
+    "UNDERLINE" : '\033[4m'
+}
 
 def inicio():
 	while(True):
@@ -46,8 +57,12 @@ def limpiar():
 
 def efecto(lista):
 	for line in lista.split("\n"):
-		print(line)
-		time.sleep(0.05)
+
+		if("]" in line):
+			print(bcolors["WARNING"]+line[:3]+bcolors["OKGREEN"]+line[3:])
+		else:
+			print(bcolors["OKCYAN"]+line)
+
 
 def clone():
 	repo=input("Link HTTPS del repositorio a clonar > ")
