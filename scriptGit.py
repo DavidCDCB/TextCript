@@ -61,6 +61,7 @@ def efecto(lista):
 			print(bcolors["WARNING"]+line[:3]+bcolors["OKGREEN"]+line[3:])
 		else:
 			print(bcolors["OKCYAN"]+line)
+		time.sleep(0.05)
 
 def clone():
 	repo=input("Link HTTPS del repositorio a clonar > ")
