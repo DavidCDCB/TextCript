@@ -14,8 +14,7 @@ _\ \ (__| |  | | |_) | |_  / /_)\| | |_
 \__/\___|_|  |_| .__/ \__| \____/|_|\__|
                |_|              
 '''
-MENU = '''
-[0] Establecer usuario
+MENU = '''[0] Establecer usuario
 [1] Crear etiqueta
 [2] Crear cambio
 [3] Comparar ramas
@@ -24,8 +23,8 @@ MENU = '''
 [6] Subir rama local
 [7] Ir a rama especifica
 [8] Crear rama
-[9] Ir a cambio especifico
-'''
+[9] Ir a cambio especifico'''
+
 BCOLORS = {
     "HEADER": '\033[95m',
     "OKBLUE": '\033[94m',
@@ -38,22 +37,71 @@ BCOLORS = {
     "UNDERLINE": '\033[4m'
 }
 
+index = -1
 
-def inicio():
+def main():
+	limpiar()
+	global index
+	mostrar_menu("Key.down")
 	while(True):
-		limpiar()
-		efecto(TITLE)
-		if(popen('git config --get remote.origin.url').read() == ""):
-			print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
-			clone()
-		else:
-			exc("git config --get user.name")
-			exc("git config --get user.email")
-			exc("git config --get remote.origin.url")
-			exc("git branch")
-			efecto(MENU)
-			acciones(input("Opción > "))
+		with verificar_paquete().Listener(on_press=mostrar_menu) as listen:
+			listen.join()
+		acciones(str(index))
 
+def verificar_paquete():
+	try:
+		from pynput import keyboard as k
+	except Exception as e:
+		print("Intalando Paquete...")
+		if(sys.platform.startswith('linux')):
+			exc("sudo pip3 install pynput")
+		else:
+			exc("pip install pynput")
+		from pynput import keyboard as k
+	return k
+
+
+def modificar_index(tecla):
+	global index
+	if(str(tecla) == "Key.up"):
+		if(index < 0):
+			index = 9
+		else:
+			index-=1
+	if(str(tecla) == "Key.down" ):
+		if(index > 10):
+			index = 0
+		else:
+			index+=1
+
+
+def mostrar_menu(tecla):
+	global index
+	modificar_index(tecla)
+
+	limpiar()
+	efecto(TITLE)
+	if(popen('git config --get remote.origin.url').read() == ""):
+		print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
+		clone()
+	else:
+		exc("git config --get user.name")
+		exc("git config --get user.email")
+		exc("git config --get remote.origin.url")
+		exc("git branch")
+		
+		caracter = str(tecla)
+		if("'" in caracter):
+			if(caracter.split("'")[1].isnumeric()):
+				index = int(caracter.split("'")[1])
+				return False
+				
+		print("\n")
+		seleccion(MENU,index)
+		print("\nUsa las teclas de dirección o presiona el numero de la Opción")
+		if(str(tecla) == "Key.right"):
+			return False		
+			
 
 def limpiar():
 	if(sys.platform.startswith('linux')):
@@ -65,12 +113,22 @@ def limpiar():
 def efecto(lista):
 	for line in lista.split("\n"):
 		if("]" in line):
-			print(BCOLORS["WARNING"]+line[:3]+BCOLORS["OKGREEN"]+line[3:])
+			print(BCOLORS["WARNING"]+line[:3]+BCOLORS["OKGREEN"]+line[3:]+BCOLORS["ENDC"])
 		else:
-			print(BCOLORS["OKCYAN"]+line)
-		time.sleep(0.05)
+			print(BCOLORS["OKCYAN"]+line+BCOLORS["ENDC"])
+		#time.sleep(0.05)
 
-
+		
+def seleccion(lista,indice):
+	cadena = ""
+	for i in range(len(lista.split("\n"))):
+		if(i == indice):
+			cadena += BCOLORS["WARNING"]+lista.split("\n")[i][:3]+BCOLORS["OKGREEN"]+lista.split("\n")[i][3:]+BCOLORS["ENDC"]+"\n"
+		else:
+			cadena += BCOLORS["ENDC"]+lista.split("\n")[i]+"\n"
+	print(cadena)
+		
+		
 def clone():
 	repo = input("Link HTTPS del repositorio a clonar > ")
 	exc("git clone "+str(repo))
@@ -185,10 +243,9 @@ def acciones(opt):
 		input()
 
 
-def main():
-	limpiar()
-	inicio()
-
-
 if __name__ == "__main__":
-    main()
+	try:
+		main()
+	except KeyboardInterrupt:
+		exit()
+    

@@ -1,1 +1,1 @@
-pyinstaller --onefile --icon=icon.ico scriptGit.py
+pyinstaller --onefile -c --icon=icon.ico scriptGit.py
