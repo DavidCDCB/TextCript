@@ -39,6 +39,7 @@ BCOLORS = {
 
 index = -1
 
+
 def main():
 	limpiar()
 	global index
@@ -47,6 +48,8 @@ def main():
 		with verificar_paquete().Listener(on_press=mostrar_menu) as listen:
 			listen.join()
 		acciones(str(index))
+		mostrar_menu("")
+
 
 def verificar_paquete():
 	try:
@@ -77,31 +80,31 @@ def modificar_index(tecla):
 
 def mostrar_menu(tecla):
 	global index
-	modificar_index(tecla)
+	caracter = str(tecla)
+	if("'" in caracter):
+		if(caracter.split("'")[1].isnumeric()):
+			index = int(caracter.split("'")[1])
+			return False
 
-	limpiar()
-	efecto(TITLE)
-	if(popen('git config --get remote.origin.url').read() == ""):
-		print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
-		clone()
-	else:
-		exc("git config --get user.name")
-		exc("git config --get user.email")
-		exc("git config --get remote.origin.url")
-		exc("git branch")
-		
-		caracter = str(tecla)
-		if("'" in caracter):
-			if(caracter.split("'")[1].isnumeric()):
-				index = int(caracter.split("'")[1])
-				return False
+	if(tecla == "" or str(tecla) == "Key.down" or str(tecla) == "Key.up" or str(tecla) == "Key.right"):
+		modificar_index(tecla)
+
+		limpiar()
+		efecto(TITLE)
+		if(popen('git config --get remote.origin.url').read() == ""):
+			print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
+			clone()
+		else:
+			exc("git config --get user.name")
+			exc("git config --get user.email")
+			exc("git config --get remote.origin.url")
+			exc("git branch")		
+			print("\n")
+			seleccion(MENU,index)
+			print("\nUsa las teclas de dirección o presiona el numero de la Opción")
+			if(str(tecla) == "Key.right"):
+				return False		
 				
-		print("\n")
-		seleccion(MENU,index)
-		print("\nUsa las teclas de dirección o presiona el numero de la Opción")
-		if(str(tecla) == "Key.right"):
-			return False		
-			
 
 def limpiar():
 	if(sys.platform.startswith('linux')):
