@@ -39,11 +39,13 @@ BCOLORS = {
 }
 
 index = -1
-
+info = ""
 
 def main():
 	limpiar()
-	global index
+	global index,info
+	efecto(TITLE)
+	limpiar()
 	mostrar_menu("Key.down")
 	while(True):
 		with verificar_paquete().Listener(on_press=mostrar_menu) as listen:
@@ -55,7 +57,7 @@ def main():
 def verificar_paquete():
 	try:
 		from pynput import keyboard as k
-	except Exception as e:
+	except ImportError as e:
 		print("Intalando Paquete...")
 		if(sys.platform.startswith('linux')):
 			exc("sudo pip3 install pynput")
@@ -69,11 +71,11 @@ def modificar_index(tecla):
 	global index
 	if(str(tecla) == "Key.up"):
 		if(index <= 0):
-			index = 9
+			index = len(MENU.split("\n"))-1
 		else:
 			index-=1
 	if(str(tecla) == "Key.down" ):
-		if(index >= 10):
+		if(index >= len(MENU.split("\n"))):
 			index = 0
 		else:
 			index+=1
@@ -83,24 +85,30 @@ def obtener_entrada(msg=""):
 	string = input(msg)
 	entrada = ""
 	corregida = False
+	
+	string = string.replace(chr(27)+chr(91)+"A","")
+	string = string.replace(chr(27)+chr(91)+"B","")
+	string = string.replace(chr(27)+chr(91)+"C","")
 
-	if(sys.platform.startswith('linux')):
-		for c in string:
-			if(re.search("[0-9]",c) and corregida == False):
-				entrada += ""
-			else:
-				entrada += c
-				corregida = True
-		entrada = entrada.replace(chr(27)+chr(91)+"A","")
-		entrada = entrada.replace(chr(27)+chr(91)+"B","")
-		entrada = entrada.replace(chr(27)+chr(91)+"C","")
-		return entrada
-	else:
-		return string
+	for c in string:
+		if(re.search("[0-9]",c) and corregida == False):
+			entrada += ""
+		else:
+			entrada += c
+			corregida = True
 
+	return entrada
 
+def repo_info():
+	cad = ""
+	cad += popen("git config --get user.name").read()
+	cad += popen("git config --get user.email").read()
+	cad += popen("git config --get remote.origin.url").read()
+	cad += popen("git branch").read()
+	return cad
+	
 def mostrar_menu(tecla):
-	global index
+	global index,info
 	caracter = str(tecla)
 	if("'" in caracter):
 		if(caracter.split("'")[1].isnumeric()):
@@ -109,20 +117,17 @@ def mostrar_menu(tecla):
 
 	if(tecla == "" or str(tecla) == "Key.down" or str(tecla) == "Key.up" or str(tecla) == "Key.right"):
 		modificar_index(tecla)
-
 		limpiar()
-		efecto(TITLE)
 		if(popen('git config --get remote.origin.url').read() == ""):
 			print("\nSin repositorio, se debe usar el script en la raiz de un proyecto.")
 			clone()
 		else:
-			exc("git config --get user.name")
-			exc("git config --get user.email")
-			exc("git config --get remote.origin.url")
-			exc("git branch")		
-			print("\n")
+			if(info == ""):
+				info = repo_info()
+			print("Información de usuario y repositorio actual:\n")
+			print(info)
+			print("\nUsa las teclas de dirección o presiona el numero de la Opción\n")
 			seleccion(MENU,index)
-			print("\nUsa las teclas de dirección o presiona el numero de la Opción")
 			if(str(tecla) == "Key.right"):
 				return False		
 				
@@ -140,8 +145,9 @@ def efecto(lista):
 			print(BCOLORS["WARNING"]+line[:3]+BCOLORS["OKGREEN"]+line[3:]+BCOLORS["ENDC"])
 		else:
 			print(BCOLORS["OKCYAN"]+line+BCOLORS["ENDC"])
-		#time.sleep(0.05)
-
+		time.sleep(0.1)
+	time.sleep(3)
+		
 		
 def seleccion(lista,indice):
 	cadena = ""
@@ -166,6 +172,7 @@ def clone():
 
 
 def acciones(opt):
+	global info
 	limpiar()
 	if(opt == "0"):
 		nombre = obtener_entrada("Usuario > ")
@@ -173,6 +180,7 @@ def acciones(opt):
 		correo = obtener_entrada("Correo > ")
 		exc("git config --global user.email '"+str(correo)+"'")
 		exc("git config --list")
+		info = repo_info()
 
 	if(opt == "1"):
 		exc("git tag")
@@ -237,6 +245,7 @@ def acciones(opt):
 		exc("git branch -v")
 		idCommit = obtener_entrada("Nombre de Rama > ")
 		exc("git checkout "+idCommit)
+		info = repo_info()
 		obtener_entrada()
 
 	if(opt == "8"):
