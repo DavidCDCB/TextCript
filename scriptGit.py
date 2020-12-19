@@ -78,21 +78,18 @@ def modificar_index(tecla):
 		else:
 			index+=1
 
-def corregir_entrada(msg):
+def obtener_entrada(msg=""):
 	string = input(msg)
 	entrada = ""
 	corregida = False
 
 	if(sys.platform.startswith('linux')):
-		print(string)
 		for c in string:
 			if(re.search("[0-9]",c) and corregida == False):
 				entrada += ""
 			else:
 				entrada += c
 				corregida = True
-		print(entrada)
-		input()
 		return entrada
 	else:
 		return string
@@ -152,7 +149,7 @@ def seleccion(lista,indice):
 		
 		
 def clone():
-	repo = input("Link HTTPS del repositorio a clonar > ")
+	repo = obtener_entrada("Link HTTPS del repositorio a clonar > ")
 	exc("git clone "+str(repo))
 	if(sys.platform.startswith('linux')):
 		exc("mv scriptGit.py ./"+str(repo.split("/")[4].split(".")[0]))
@@ -166,103 +163,103 @@ def clone():
 def acciones(opt):
 	limpiar()
 	if(opt == "0"):
-		nombre = input("Usuario > ")
+		nombre = obtener_entrada("Usuario > ")
 		exc("git config --global user.name '"+str(nombre)+"'")
-		correo = input("Correo > ")
+		correo = obtener_entrada("Correo > ")
 		exc("git config --global user.email '"+str(correo)+"'")
 		exc("git config --list")
 
 	if(opt == "1"):
 		exc("git tag")
-		etiqueta = input("\nCrear versión > ")
-		descripcion = input("\nDescripción > ")
+		etiqueta = obtener_entrada("\nCrear versión > ")
+		descripcion = obtener_entrada("\nDescripción > ")
 		exc("git tag -a "+etiqueta+" -m '"+str(descripcion)+"'")
 
 	if(opt == "2"):
 		print("\nCambios a confirmar...\n")
 		exc("git status -sb")
-		message = input("\nDescripción del cambio > ")
+		message = obtener_entrada("\nDescripción del cambio > ")
 		exc("git add .")
 		exc('git commit -m "'+str(message)+'"')
 		limpiar()
 		exc("git log -3 --graph --decorate --all --abbrev-commit")
-		input()
+		obtener_entrada()
 
 	if(opt == "3"):
 		limpiar()
 		exc("git fetch")
 		exc("\ngit branch -v -a")
-		ramaA = input("\nComparar rama: > ")
-		ramaB = input("Con la rama: > ")
+		ramaA = obtener_entrada("\nComparar rama: > ")
+		ramaB = obtener_entrada("Con la rama: > ")
 		if(sys.platform.startswith('linux')):
 			exc("git difftool -y --tool=meld "+str(ramaA)+" "+str(ramaB))
 		else:
 			print("-> INGRESAR ':q' PARA SALIR DEL COMPARADOR")
-			input()
+			obtener_entrada()
 			exc("git difftool -y "+str(ramaA)+" "+str(ramaB))
 
 	if(opt == "4"):
 		exc("git fetch")
 		exc("\ngit branch -v -a")
-		rama = input("Rama a traer > ")
+		rama = obtener_entrada("Rama a traer > ")
 		exc("git diff "+str(rama))
 		exc("git merge "+str(rama))
-		input()
+		obtener_entrada()
 
 	if(opt == "5"):
 		exc("git fetch")
 		limpiar()
 		exc('git log --graph --pretty=format:"%C(cyan)%h%Creset -> %an -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset" --abbrev-commit')
-		input()
+		obtener_entrada()
 		limpiar()
 		print("\n Ramas:\n")
 		exc("git branch -v")
-		input()
+		obtener_entrada()
 		print("\n Modificaciones sin reportar: \n")
 		exc("git status -s")
-		input()
+		obtener_entrada()
 
 	if(opt == "6"):
 		limpiar()
 		exc("git fetch")
 		exc("git branch -v")
-		rama = corregir_entrada("Rama a subir > ")
+		rama = obtener_entrada("Rama a subir > ")
 		exc("git push origin "+rama)
-		input()
+		obtener_entrada()
 
 	if(opt == "7"):
 		print("\nRamas:\n")
 		exc("git branch -v")
-		idCommit = input("Nombre de Rama > ")
+		idCommit = obtener_entrada("Nombre de Rama > ")
 		exc("git checkout "+idCommit)
-		input()
+		obtener_entrada()
 
 	if(opt == "8"):
 		limpiar()
-		rama = input("Nombre de rama > ")
+		rama = obtener_entrada("Nombre de rama > ")
 		exc("git branch "+str(rama))
 		exc("git checkout "+str(rama))
 		exc("git branch -v")
-		input()
+		obtener_entrada()
 
 	if(opt == "9"):
 		exc("git reflog")
-		commit = input("ID de Commit > ")
-		respuesta = input("¿Conservar modificaciones? s/n > ")
+		commit = obtener_entrada("ID de Commit > ")
+		respuesta = obtener_entrada("¿Conservar modificaciones? s/n > ")
 		if(respuesta.lower() == "s"):
 			exc("git reset "+commit+" --soft")
 		elif(respuesta.lower() == "n"):
 			exc("git reset "+commit+" --hard")
 		else:
 			print("Abortado")
-			input()
+			obtener_entrada()
 		exc("git log -3 --graph --decorate --all --abbrev-commit")
 
 	#Para corregir cagazo en un commit acabado de crear :D
 	if(opt == "10"):
 		exc("git add .")
 		exc("git commit --amend")
-		input()
+		obtener_entrada()
 
 
 if __name__ == "__main__":
