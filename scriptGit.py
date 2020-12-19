@@ -8,12 +8,18 @@ import re
 import time
 
 TITLE = '''
- __           _       _       ___ _ _  
-/ _\ ___ _ __(_)_ __ | |_    / _ (_) |_ 
-\ \ / __| '__| | '_ \| __|  / /_\/ | __|
-_\ \ (__| |  | | |_) | |_  / /_)\| | |_  
-\__/\___|_|  |_| .__/ \__| \____/|_|\__|
-               |_|              
+  ______                       __             __            ______   __    __     
+ /      \                     |  \           |  \          /      \ |  \  |  \    
+|  ######\  _______   ______   \##  ______  _| ##_        |  ######\ \## _| ##_   
+| ##___\## /       \ /      \ |  \ /      \|   ## \       | ## __\##|  \|   ## \  
+ \##    \ |  #######|  ######\| ##|  ######\\######        | ##|    \| ## \######  
+ _\######\| ##      | ##   \##| ##| ##  | ## | ## __      | ## \####| ##  | ## __ 
+|  \__| ##| ##_____ | ##      | ##| ##__/ ## | ##|  \     | ##__| ##| ##  | ##|  \\
+ \##    ## \##     \| ##      | ##| ##    ##  \##  ##______\##    ##| ##   \##  ##
+  \######   \####### \##       \##| #######    \####|      \\######  \ ##    \#### 
+                                  | ##               \######                      
+                                  | ##                                            
+                                   \##                                                       
 '''
 MENU = '''[0] Establecer usuario
 [1] Crear etiqueta
@@ -45,7 +51,6 @@ def main():
 	limpiar()
 	global index,info
 	efecto(TITLE)
-	limpiar()
 	mostrar_menu("Key.down")
 	while(True):
 		with verificar_paquete().Listener(on_press=mostrar_menu) as listen:
@@ -100,12 +105,12 @@ def obtener_entrada(msg=""):
 	return entrada
 
 def repo_info():
-	cad = ""
+	cad = BCOLORS["WARNING"]
 	cad += popen("git config --get user.name").read()
 	cad += popen("git config --get user.email").read()
 	cad += popen("git config --get remote.origin.url").read()
 	cad += popen("git branch").read()
-	return cad
+	return cad+BCOLORS["ENDC"]
 	
 def mostrar_menu(tecla):
 	global index,info
@@ -140,14 +145,17 @@ def limpiar():
 
 
 def efecto(lista):
-	for line in lista.split("\n"):
-		if("]" in line):
-			print(BCOLORS["WARNING"]+line[:3]+BCOLORS["OKGREEN"]+line[3:]+BCOLORS["ENDC"])
+	cad = ""
+	for c in lista:
+		if(c=="#"):
+			cad += BCOLORS["OKCYAN"]+c+BCOLORS["ENDC"]
 		else:
-			print(BCOLORS["OKCYAN"]+line+BCOLORS["ENDC"])
+			cad += BCOLORS["OKGREEN"]+c+BCOLORS["ENDC"]		
+	for linea in cad.split("\n"):
+		print(linea)
 		time.sleep(0.1)
-	time.sleep(3)
-		
+	time.sleep(1)
+	
 		
 def seleccion(lista,indice):
 	cadena = ""
