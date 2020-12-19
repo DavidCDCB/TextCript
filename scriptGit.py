@@ -68,15 +68,16 @@ def verificar_paquete():
 def modificar_index(tecla):
 	global index
 	if(str(tecla) == "Key.up"):
-		if(index < 0):
+		if(index <= 0):
 			index = 9
 		else:
 			index-=1
 	if(str(tecla) == "Key.down" ):
-		if(index > 10):
+		if(index >= 10):
 			index = 0
 		else:
 			index+=1
+
 
 def obtener_entrada(msg=""):
 	string = input(msg)
@@ -90,9 +91,13 @@ def obtener_entrada(msg=""):
 			else:
 				entrada += c
 				corregida = True
+		entrada = entrada.replace(chr(27)+chr(91)+"A","")
+		entrada = entrada.replace(chr(27)+chr(91)+"B","")
+		entrada = entrada.replace(chr(27)+chr(91)+"C","")
 		return entrada
 	else:
 		return string
+
 
 def mostrar_menu(tecla):
 	global index
