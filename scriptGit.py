@@ -4,6 +4,7 @@
 from os import system as exc
 from os import popen
 import sys
+import re
 import time
 
 TITLE = '''
@@ -77,6 +78,24 @@ def modificar_index(tecla):
 		else:
 			index+=1
 
+def corregir_entrada(msg):
+	string = input(msg)
+	entrada = ""
+	corregida = False
+
+	if(sys.platform.startswith('linux')):
+		print(string)
+		for c in string:
+			if(re.search("[0-9]",c) and corregida == False):
+				entrada += ""
+			else:
+				entrada += c
+				corregida = True
+		print(entrada)
+		input()
+		return entrada
+	else:
+		return string
 
 def mostrar_menu(tecla):
 	global index
@@ -207,7 +226,7 @@ def acciones(opt):
 		limpiar()
 		exc("git fetch")
 		exc("git branch -v")
-		rama = input("Rama a subir > ")
+		rama = corregir_entrada("Rama a subir > ")
 		exc("git push origin "+rama)
 		input()
 
