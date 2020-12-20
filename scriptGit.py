@@ -17,21 +17,24 @@ TITLE = '''
 |  \__| ##| ##_____ | ##      | ##| ##__/ ## | ##|  \     | ##__| ##| ##  | ##|  \\
  \##    ## \##     \| ##      | ##| ##    ##  \##  ##______\##    ##| ##   \##  ##
   \######   \####### \##       \##| #######    \####|      \\######  \ ##    \#### 
-                                  | ##               \######                      
+                                  | ##               \######              By CDCB           
                                   | ##                                            
                                    \##                                                       
 '''
-MENU = '''[0] Establecer usuario
-[1] Crear etiqueta
-[2] Crear cambio
-[3] Comparar ramas
-[4] Fusionar rama
-[5] Ver historial y estado
-[6] Subir rama local
-[7] Ir a rama especifica
-[8] Crear rama
-[9] Ir a cambio especifico'''
+MENU = '''[ 0] Establecer usuario
+[ 1] Crear etiqueta
+[ 2] Crear cambio
+[ 3] Comparar ramas
+[ 4] Fusionar rama
+[ 5] Ver historial y estado
+[ 6] Subir rama local
+[ 7] Ir a rama especifica
+[ 8] Crear rama
+[ 9] Ir a cambio especifico
+[10] Complementar ultimo cambio local
+[11] Eliminar ultimo cambio remoto'''
 
+# Diccionario usado para obtener los caracteres de cambio de color
 BCOLORS = {
     "HEADER": '\033[95m',
     "OKBLUE": '\033[94m',
@@ -44,82 +47,33 @@ BCOLORS = {
     "UNDERLINE": '\033[4m'
 }
 
-index = -1
-info = ""
+index = -1 # Posición del cursor del menu
+info = "" # Información del usuario y el repo
 
+# Se inicia el Loop del proceso para capturar acciones y volver al menu
 def main():
-	limpiar()
 	global index,info
+	limpiar()
 	efecto(TITLE)
 	mostrar_menu("Key.down")
 	while(True):
+		# Entra en estado de escucha de una pulsacion 
+		# Por cada pulsacion llama la funcion para mostrar el menu
 		with verificar_paquete().Listener(on_press=mostrar_menu) as listen:
 			listen.join()
 		acciones(str(index))
 		mostrar_menu("")
 
-
-def verificar_paquete():
-	try:
-		from pynput import keyboard as k
-	except ImportError as e:
-		print("Intalando Paquete...")
-		if(sys.platform.startswith('linux')):
-			exc("sudo pip3 install pynput")
-		else:
-			exc("pip install pynput")
-		from pynput import keyboard as k
-	return k
-
-
-def modificar_index(tecla):
-	global index
-	if(str(tecla) == "Key.up"):
-		if(index <= 0):
-			index = len(MENU.split("\n"))-1
-		else:
-			index-=1
-	if(str(tecla) == "Key.down" ):
-		if(index >= len(MENU.split("\n"))):
-			index = 0
-		else:
-			index+=1
-
-
-def obtener_entrada(msg=""):
-	string = input(msg)
-	entrada = ""
-	corregida = False
-	
-	string = string.replace(chr(27)+chr(91)+"A","")
-	string = string.replace(chr(27)+chr(91)+"B","")
-	string = string.replace(chr(27)+chr(91)+"C","")
-
-	for c in string:
-		if(re.search("[0-9]",c) and corregida == False):
-			entrada += ""
-		else:
-			entrada += c
-			corregida = True
-
-	return entrada
-
-def repo_info():
-	cad = BCOLORS["WARNING"]
-	cad += popen("git config --get user.name").read()
-	cad += popen("git config --get user.email").read()
-	cad += popen("git config --get remote.origin.url").read()
-	cad += popen("git branch").read()
-	return cad+BCOLORS["ENDC"]
-	
+# Entra como parametro el objeto de tipo tecla
 def mostrar_menu(tecla):
 	global index,info
+	# Se verifica si lo que se pulsó es un numero
 	caracter = str(tecla)
 	if("'" in caracter):
 		if(caracter.split("'")[1].isnumeric()):
 			index = int(caracter.split("'")[1])
 			return False
-
+	# Se verifica si lo pulsado es una tecla de direccion
 	if(tecla == "" or str(tecla) == "Key.down" or str(tecla) == "Key.up" or str(tecla) == "Key.right"):
 		modificar_index(tecla)
 		limpiar()
@@ -134,16 +88,70 @@ def mostrar_menu(tecla):
 			print("\nUsa las teclas de dirección o presiona el numero de la Opción\n")
 			seleccion(MENU,index)
 			if(str(tecla) == "Key.right"):
-				return False		
-				
+				return False	
 
+# Verifica si en el equipo está instalado el paquete para detectar pulsaciones
+def verificar_paquete():
+	try:
+		from pynput import keyboard as k
+	except ImportError as e:
+		print("Intalando Paquete...")
+		if(sys.platform.startswith('linux')):
+			exc("sudo pip3 install pynput")
+		else:
+			exc("pip install pynput")
+		from pynput import keyboard as k
+	return k
+
+# Se controla el movimiento del cursor en el menu
+def modificar_index(tecla):
+	global index
+	if(str(tecla) == "Key.up"):
+		if(index <= 0):
+			index = len(MENU.split("\n"))-1
+		else:
+			index-=1
+	if(str(tecla) == "Key.down" ):
+		if(index >= len(MENU.split("\n"))):
+			index = 0
+		else:
+			index+=1
+
+# Las entradas se deben corregir si entran con caracteres especiales debido a las pulsaciones anteriores
+def obtener_entrada(msg=""):
+	string = input(msg)
+	entrada = ""
+	corregida = False
+	string = string.replace(chr(27)+chr(91)+"A","")
+	string = string.replace(chr(27)+chr(91)+"B","")
+	string = string.replace(chr(27)+chr(91)+"C","")
+
+	for c in string:
+		if(re.search("[0-9]",c) and corregida == False):
+			entrada += ""
+		else:
+			entrada += c
+			corregida = True
+
+	return entrada
+
+# Se optiene informacion de GIT respecto a la direccion actual
+def repo_info():
+	cad = BCOLORS["OKGREEN"]
+	cad += popen("git config --get user.name").read()
+	cad += popen("git config --get user.email").read()
+	cad += popen("git config --get remote.origin.url").read()
+	cad += popen("git branch").read()
+	return cad+BCOLORS["ENDC"]
+					
+# Por medio de comando de la shell se limpia la terminal
 def limpiar():
 	if(sys.platform.startswith('linux')):
 		exc("clear")
 	else:
 		exc("cls")
 
-
+# Efecto de trancision para el titulo
 def efecto(lista):
 	cad = ""
 	for c in lista:
@@ -156,17 +164,17 @@ def efecto(lista):
 		time.sleep(0.1)
 	time.sleep(1)
 	
-		
+# Visualización del menu respecto a la posición del cursor
 def seleccion(lista,indice):
 	cadena = ""
 	for i in range(len(lista.split("\n"))):
 		if(i == indice):
-			cadena += "->"+BCOLORS["WARNING"]+lista.split("\n")[i][:3]+BCOLORS["OKGREEN"]+lista.split("\n")[i][3:]+BCOLORS["ENDC"]+"\n"
+			cadena += "\033[5m->"+BCOLORS["ENDC"]+BCOLORS["WARNING"]+lista.split("\n")[i][:3]+BCOLORS["OKGREEN"]+lista.split("\n")[i][3:]+BCOLORS["ENDC"]+"\n"
 		else:
 			cadena += "  "+BCOLORS["ENDC"]+lista.split("\n")[i]+"\n"
 	print(cadena)
 		
-		
+# Se clona el repositorio remoto y el script se mueve a su carpeta raiz
 def clone():
 	repo = obtener_entrada("Link HTTPS del repositorio a clonar > ")
 	exc("git clone "+str(repo))
@@ -178,7 +186,7 @@ def clone():
 	time.sleep(5)
 	exit()
 
-
+# Conjunto de comandos GIT respecto a la acción elegida
 def acciones(opt):
 	global info
 	limpiar()
@@ -277,11 +285,17 @@ def acciones(opt):
 			obtener_entrada()
 		exc("git log -3 --graph --decorate --all --abbrev-commit")
 
-	#Para corregir cagazo en un commit acabado de crear :D
 	if(opt == "10"):
 		exc("git add .")
 		exc("git commit --amend")
 		obtener_entrada()
+		
+	if(opt == "11"):
+		exc("git branch -v")
+		rama = obtener_entrada("Nombre de Rama > ")
+		exc("git push -f origin HEAD^:"+rama)
+		exc("git log -3 --graph --decorate --all --abbrev-commit")
+		
 
 
 if __name__ == "__main__":
