@@ -252,6 +252,7 @@ def acciones(opt):
 		limpiar()
 		exc("git fetch")
 		exc("git branch -v")
+		print("-> ¡Recuerde hacer pull y solucionar los posibles conflictos antes de subir los cambios!")
 		rama = obtener_entrada("Rama a subir > ")
 		exc("git push origin "+rama)
 		obtener_entrada()
